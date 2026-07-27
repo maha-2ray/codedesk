@@ -1,9 +1,53 @@
-/* body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
-    sans-serif;
-  margin: auto;
-  max-width: 38rem;
-  padding: 2rem;
-} */
-@import "tailwindcss";
+@import 'tailwindcss';
+
+/*
+ * Base styles for the desktop shell. The app is dark by default: exam halls
+ * are often dimly lit and candidates work for long sittings.
+ */
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-family:
+      -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+      sans-serif;
+    background-color: theme(colors.slate.950);
+    color: theme(colors.slate.100);
+    /* A desktop app should not rubber-band like a web page. */
+    overscroll-behavior: none;
+  }
+
+  /* Selecting UI chrome looks broken in a desktop app; inputs opt back in. */
+  body {
+    user-select: none;
+  }
+
+  input,
+  textarea,
+  [contenteditable='true'],
+  pre,
+  code {
+    user-select: text;
+  }
+
+  :focus-visible {
+    outline: 2px solid theme(colors.sky.500);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
