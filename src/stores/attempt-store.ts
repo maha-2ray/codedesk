@@ -327,15 +327,22 @@ export function useAttemptProgress(): {
   answered: number;
   flagged: number;
 } {
-  return useAttemptStore((s) => {
-    const total = s.orderedQuestions.length;
+  const total = useAttemptStore((s) => s.orderedQuestions.length);
+  const answered = useAttemptStore((s) => {
     let answered = 0;
-    let flagged = 0;
     for (const question of s.orderedQuestions) {
       const answer = s.answers[question.id];
       if (isAnswered(answer)) answered += 1;
-      if (answer?.flagged) flagged += 1;
     }
-    return { total, answered, flagged };
+    return answered;
   });
+  const flagged = useAttemptStore((s) => {
+    let flagged = 0;
+    for (const question of s.orderedQuestions) {
+      if (s.answers[question.id]?.flagged) flagged += 1;
+    }
+    return flagged;
+  });
+
+  return { total, answered, flagged };
 }
